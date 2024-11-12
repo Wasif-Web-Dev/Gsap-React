@@ -30,7 +30,7 @@ const App = () => {
                 <Navbar />
                 <Routes>
                     <Route
-                        path="/Home"
+                        path="/"
                         element={
                             <PageWrapper>
                                 <Home />
