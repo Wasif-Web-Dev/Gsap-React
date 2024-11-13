@@ -69,6 +69,15 @@ const Home = () => {
         {
             url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f8f9b0bc4f2b7d253f_amelia-bts-7.jpg",
         },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f791e958b9ab8aafd2_amelia-bts-5.jpg",
+        },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f82ebd5eb60fb9655c_amelia-bts-4.jpg",
+        },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f72f2ded6177a29eb4_amelia-bts-2.jpg",
+        },
     ];
 
     const scrollRef = useRef(null);
@@ -125,16 +134,20 @@ const Home = () => {
         });
 
         gsap.to(ImgRef.current, {
-            y: -1800,
-            ease: "none",
+            y: -7000,
+            ease: "none", // Changed to even smoother easing
+            // duration: 14, // Increased duration for slower animation
             scrollTrigger: {
                 trigger: ".pinner",
-                start: "top top",
-                end: "bottom 30%",
-                scrub: 5,
+                start: "top 30%",
+                end: "bottom top",
+                scrub: 5, // Increased scrub value for slower, smoother scrolling
                 pin: true,
-                anticipatePin: 1,
-                // markers: true,
+                pinSpacing: true,
+                anticipatePin: 5, // Increased for smoother pin transition
+                smoothScroll: true,
+                fastScrollEnd: false, // Added for smoother end behavior
+                markers: true,
             },
         });
     }, [scrollRef.current, scrollRef2.current, spannerRefs.current, containerRef.current, ImgRef.current]);
@@ -187,13 +200,14 @@ const Home = () => {
                     })}
                 </div>
             </div>
-            <div className="h-[100vh] flex relative items-center overflow-hidden flex-col justify-center pinner">
+            <div className="h-[70vh] flex relative items-center overflow-hidden flex-col justify-center pinner">
                 <h1 className="text-4xl">Behind</h1>
-                <div className="h-[60vh] w-[70%] rounded-3xl object-cover overflow-hidden ">
+                <div className="h-[63vh] w-[70%] rounded-3xl object-cover overflow-hidden ">
                     <div ref={ImgRef} className="flex flex-col gap-10">
                         {scrollingImages.map((i, ind) => {
                             return <img key={ind} className="rounded-3xl" src={i.url} alt="" />;
                         })}
+                        <h1 className="text-8xl text-white">The Scenes</h1>
                     </div>
                 </div>
             </div>
