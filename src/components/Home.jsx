@@ -53,8 +53,29 @@ const Home = () => {
         },
     ];
 
+    const scrollingImages = [
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f81b3a3c4fc08b6e94_amelia-bts-1.jpg",
+        },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f8e8103db12dfcc0d2_amelia-bts-3.jpg",
+        },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f7c9f2ad517872d693_amelia-bts-8.jpg",
+        },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f8a7ac136fd5a5a1be_amelia-bts-6.jpg",
+        },
+        {
+            url: "https://cdn.prod.website-files.com/60eeb025115a75902b86a796/636ab4f8f9b0bc4f2b7d253f_amelia-bts-7.jpg",
+        },
+    ];
+
     const scrollRef = useRef(null);
     const scrollRef2 = useRef(null);
+    const spannerRefs = useRef([]);
+    const ImgRef = useRef(null);
+    const containerRef = useRef(null);
 
     useGSAP(() => {
         const scrollContainer = scrollRef.current;
@@ -68,7 +89,7 @@ const Home = () => {
                 start: "top bottom",
                 end: "bottom top",
                 scrub: 1,
-                markers: true,
+                // markers: true,
             },
         });
 
@@ -85,14 +106,41 @@ const Home = () => {
                     start: "top bottom",
                     end: "bottom top",
                     scrub: 1,
-                    markers: true,
+                    // markers: true,
                 },
             }
         );
-    }, []);
+
+        gsap.from(spannerRefs.current, {
+            y: 100,
+            duration: 1,
+            stagger: 0.01,
+            scrollTrigger: {
+                trigger: ".spanner",
+                start: "top 90%",
+                end: "bottom 70%",
+                scrub: 2,
+                // markers: true,
+            },
+        });
+
+        gsap.to(ImgRef.current, {
+            y: -1800,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".pinner",
+                start: "top top",
+                end: "bottom 30%",
+                scrub: 5,
+                pin: true,
+                anticipatePin: 1,
+                // markers: true,
+            },
+        });
+    }, [scrollRef.current, scrollRef2.current, spannerRefs.current, containerRef.current, ImgRef.current]);
 
     return (
-        <div className="w-full h-[200vh]">
+        <div className="w-full h-[800vh] bg-[#0e1012] main">
             {" "}
             {/* Increased height to make scrolling happen */}
             <div className="px-16 h-[100vh]">
@@ -114,15 +162,20 @@ const Home = () => {
                 <h1 className="text-md font-semibold">Location</h1>
                 <h1 className="text-xl font-semibold">Cornwall, Scotland</h1>
 
-                <h1 className="w-[45%] mt-16 text-2xl text-center">
-                    The film AMELIA explores the colorful life of the photographer Amelia Le Brun. This film is a window
-                    into how her past demons and nostalgic childhood memories have shaped her into the creative she is
-                    today. Her turbulent yet adventurous upbringing sparked her creative appetite to document the world
-                    around her and never to lose that younger version of herself.
+                <h1 className="w-[45%] mt-16 text-2xl text-center spanner ">
+                    {"The film AMELIA explores the colorful life of the photographer Amelia Le Brun. This film is a window into how her past demons and nostalgic childhood memories have shaped her into the creative she is today. Her turbulent yet adventurous upbringing sparked her creative appetite to document the world around her and never to lose that younger version of herself."
+                    .split(" ")
+                    .map((char, index) => (
+                        <div className=" relative  overflow-hidden h-7" key={index} style={{display: "inline-block"}}>
+                            <div ref={(el) => (spannerRefs.current[index] = el)} className="">
+                                {char}
+                            </div>
+                        </div>
+                    ))}
                 </h1>
             </div>
             {/* Horizontal Scrolling Images Section */}
-            <div className="w-full h-[100vh] overflow-hidden flex flex-col gap-3">
+            <div className="w-full h-[100vh] overflow-hidden flex flex-col gap-3 ">
                 <div ref={scrollRef} className="flex gap-3">
                     {images1.map((i, index) => {
                         return <img key={index} src={i.url} alt="image" className="w-[23vw] object-cover rounded-xl" />;
@@ -132,6 +185,16 @@ const Home = () => {
                     {images2.map((i, index) => {
                         return <img key={index} src={i.url} alt="image" className="w-[24vw] object-cover rounded-xl" />;
                     })}
+                </div>
+            </div>
+            <div className="h-[100vh] flex relative items-center overflow-hidden flex-col justify-center pinner">
+                <h1 className="text-4xl">Behind</h1>
+                <div className="h-[60vh] w-[70%] rounded-3xl object-cover overflow-hidden ">
+                    <div ref={ImgRef} className="flex flex-col gap-10">
+                        {scrollingImages.map((i, ind) => {
+                            return <img key={ind} className="rounded-3xl" src={i.url} alt="" />;
+                        })}
+                    </div>
                 </div>
             </div>
         </div>
